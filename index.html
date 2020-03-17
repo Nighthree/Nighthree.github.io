@@ -103,7 +103,7 @@
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-        <p class="site-subtitle">即使是彎路，也有只在彎路開的花</p>
+        <p class="site-subtitle">跌倒了也要記得爬起來，繼續向前行</p>
   </div>
 
   <div class="site-nav-right">
@@ -162,6 +162,98 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/17/2020-03-17-%E5%A6%82%E4%BD%95%E5%9C%A8%20Vue%20%E4%BD%BF%E7%94%A8%20AOS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Shine">
+      <meta itemprop="description" content="想分享什麼就分享什麼的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shine's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/17/2020-03-17-%E5%A6%82%E4%BD%95%E5%9C%A8%20Vue%20%E4%BD%BF%E7%94%A8%20AOS/" class="post-title-link" itemprop="url">如何在 Vue 使用 AOS 動畫</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+              
+
+              <time title="創建時間：2020-03-17 00:00:00 / 修改時間：22:33:31" itemprop="dateCreated datePublished" datetime="2020-03-17T00:00:00+08:00">2020-03-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今天來分享一下如何在 Vue 使用 AOS 動畫，這是一款蠻好上手的滾動式動畫插件，官方也提供很多種設定，讓我們可以自訂義想呈現的動畫效果，整體操作起來簡單易懂。</p>
+<p>AOS 官方連結： <a href="https://michalsnik.github.io/aos/" target="_blank" rel="noopener">https://michalsnik.github.io/aos/</a></p>
+<h2 id="下載套件"><a href="#下載套件" class="headerlink" title="下載套件"></a>下載套件</h2><p>首先先在專案下安裝此插件</p>
+<p>指令碼</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i aos@next</span><br></pre></td></tr></table></figure>
+
+<h2 id="注入-main-js-中"><a href="#注入-main-js-中" class="headerlink" title="注入 main.js 中"></a>注入 main.js 中</h2><p>把 AOS <code>import</code> 進 <code>main.js</code> 裡面</p>
+<p>內容</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> AOS <span class="keyword">from</span> <span class="string">"aos"</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">"aos/dist/aos.css"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  created() &#123;</span><br><span class="line">    AOS.init(&#123; &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">    router,</span><br><span class="line">    render: <span class="function"><span class="params">h</span> =&gt;</span> h(App)</span><br><span class="line">    &#125;).$mount(<span class="string">"#app"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>這邊要注意的是，需要在 <code>new Vue</code> 裡面創建一個 <code>created(){}</code> 把官方的 <code>AOS.init({});</code> 寫入其中。</p>
+<h2 id="運行動畫效果"><a href="#運行動畫效果" class="headerlink" title="運行動畫效果"></a>運行動畫效果</h2><p>接下來就可以在專案中帶入動畫效果了</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-aos</span>=<span class="string">"fade-up"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>是不是很簡單 XD </p>
+<h2 id="客製化"><a href="#客製化" class="headerlink" title="客製化"></a>客製化</h2><ul>
+<li><h3 id="細部設定"><a href="#細部設定" class="headerlink" title="細部設定"></a>細部設定</h3><p>官方提供蠻多的客製化內容，如 <code>data-aos-duration:400</code> 動畫速率、 <code>data-aos-once=&quot;true&quot;</code> 動畫進行一次等設定，<a href="https://github.com/michalsnik/aos#2-set-animation-using-data-aos-attribute" target="_blank" rel="noopener">連結</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">data-aos</span>=<span class="string">"fade-up"</span> <span class="attr">data-aos-duration</span>=<span class="string">"1000"</span> <span class="attr">data-aos-once</span>=<span class="string">"false"</span> <span class="attr">...</span> &gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><h3 id="全域設定"><a href="#全域設定" class="headerlink" title="全域設定"></a>全域設定</h3><p>除了個別設定外，當然也有寫在 <code>AOS.init({});</code> 裡的全域設定，<a href="https://github.com/michalsnik/aos#-how-to-use-it" target="_blank" rel="noopener">連結</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">AOS.init(&#123;</span><br><span class="line">  disable: <span class="literal">false</span>, </span><br><span class="line">  startEvent: <span class="string">'DOMContentLoaded'</span>, </span><br><span class="line">  ...</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>參考網址：<a href="https://www.yasminzy.com/vue/aos.html#steps" target="_blank" rel="noopener">https://www.yasminzy.com/vue/aos.html#steps</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/13/2020-03-13-Vue%20%E4%B8%80%E5%80%8B%E6%8C%87%E4%BB%A4%E7%A2%BC%E5%B0%87%20build%20%E5%87%BA%E4%BE%86%E7%9A%84%E5%85%A7%E5%AE%B9%E6%8E%A8%E5%88%B0%20gh-pages%20%E4%B8%8A%20(%20%E5%8C%85%E5%90%AB%20Windows%20%E8%A7%A3%E6%B1%BA%E8%BE%A6%E6%B3%95%20)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -185,10 +277,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">發表於</span>
-              
 
-              <time title="創建時間：2020-03-13 00:00:00 / 修改時間：18:33:20" itemprop="dateCreated datePublished" datetime="2020-03-13T00:00:00+08:00">2020-03-13</time>
+              <time title="創建時間：2020-03-13 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-13T00:00:00+08:00">2020-03-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新於</span>
+                <time title="修改時間：2020-03-17 22:43:53" itemprop="dateModified" datetime="2020-03-17T22:43:53+08:00">2020-03-17</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -210,7 +308,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天來寫一下怎麼讓 Vue <code>build</code> 出來的內容推到 gh-pages 上，相信很多人懂得在 GitHub 產生靜態網頁，但是卻不懂怎麼讓 gh-pages 上傳的檔案內容不一樣，這邊來分享我的解決方式</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天來寫一下怎麼讓 Vue <code>build</code> 出來的內容推到 gh-pages 上，相信很多同學懂得在 GitHub 產生靜態網頁，但是卻不懂怎麼讓 gh-pages 上傳的檔案內容不一樣，這邊來分享我的解決方式</p>
 <p>如果不懂一般作法可以先看這部六角學院的教學</p>
 <iframe src="https://www.youtube.com/embed/njlABvVRB68" width="100%" height="300" frameborder="0" loading="lazy" allowfullscreen></iframe>
 
@@ -305,10 +403,10 @@
 <li>接著在專案路徑下執行 <code>sh deploy.sh</code> 或是到專案資料夾雙擊 deploy.sh 檔案就可以了<img src="https://3.bp.blogspot.com/-avM6mHJA_wU/Xlz5PWHbV5I/AAAAAAAABPs/8f2oyblQjL4lIaPt-la8uj_UJ8nym1zngCK4BGAYYCw/s640/564564.JPG" class="[class names]" title="[width] [height] " alt="title text">
 <img src="https://1.bp.blogspot.com/-_JKNWsL5rG0/Xlz5QzGz4LI/AAAAAAAABP0/ILL64miWGfcGuNycmNVAdTMUZ5Pob3y-QCK4BGAYYCw/s640/98%252B89898.JPG" class="[class names]" title="[width] [height] " alt="title text">
 
-
 </li>
 </ol>
 <p>推送成功後開心地去看渲染好的網頁吧~</p>
+<p>更新補充：有<a href="https://buzzorange.com/techorange/2019/05/08/windows-linux/" target="_blank" rel="noopener">報導</a>指出微軟官方已經有導入 Linux 環境了，但是要打開 Linux 需要透過一些步驟，我在找這個問題的解決方法時有試著打開過，結論是 嗯…… 我太菜了還是先關掉好了。</p>
 
       
     </div>
@@ -472,20 +570,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
