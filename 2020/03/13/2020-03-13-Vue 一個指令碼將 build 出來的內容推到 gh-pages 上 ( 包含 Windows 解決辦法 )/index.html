@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://3.bp.blogspot.com/-avM6mHJA_wU/Xlz5PWHbV5I/AAAAAAAABPs/8f2oyblQjL4lIaPt-la8uj_UJ8nym1zngCK4BGAYYCw/s640/564564.JPG">
 <meta property="og:image" content="https://1.bp.blogspot.com/-_JKNWsL5rG0/Xlz5QzGz4LI/AAAAAAAABP0/ILL64miWGfcGuNycmNVAdTMUZ5Pob3y-QCK4BGAYYCw/s640/98%252B89898.JPG">
 <meta property="article:published_time" content="2020-03-12T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-04-08T07:00:02.997Z">
+<meta property="article:modified_time" content="2020-04-09T10:46:50.195Z">
 <meta property="article:author" content="Shine">
 <meta property="article:tag" content="Vue">
 <meta property="article:tag" content="GitHub">
@@ -202,7 +202,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-04-08 15:00:02" itemprop="dateModified" datetime="2020-04-08T15:00:02+08:00">2020-04-08</time>
+                <time title="修改時間：2020-04-09 18:46:50" itemprop="dateModified" datetime="2020-04-09T18:46:50+08:00">2020-04-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -281,17 +281,17 @@
 <img src="https://2.bp.blogspot.com/-Mn9cLUwSsy0/Xlz6JWE6vkI/AAAAAAAABQE/7IUUuE2KEtMyimYl1M1xr_WcAp9UPFjuQCK4BGAYYCw/s400/67987.JPG" class="[class names]" title="[width] [height] " alt="title text">
 
 <p>接下來輸入指令 <code>sh deploy.sh</code> 或是到專案資料夾雙擊 deploy.sh 檔案就可以了</p>
-<img src="https://1.bp.blogspot.com/-PiFwcs_L7g4/XmEeM-PXLBI/AAAAAAAABQ0/VbJoOfSKks8zNAC86V6iGjPHtGal76BpgCLcBGAsYHQ/s320/897987.jpg" class="[class names]" title="[width] [height] " alt="title text">
+<img src="https://1.bp.blogspot.com/-PiFwcs_L7g4/XmEeM-PXLBI/AAAAAAAABQ0/VbJoOfSKks8zNAC86V6iGjPHtGal76BpgCLcBGAsYHQ/s320/897987.jpg" class="[class names]">
 
 
 
 <h2 id="Window-執行問題"><a href="#Window-執行問題" class="headerlink" title="Window 執行問題"></a>Window 執行問題</h2><p>這時候如果是在 VSCode 環境下執行指令 <code>sh deploy.sh</code> 是會跳錯的，原因是 Windows 內沒有包含 Linux 環境，這是 sh 檔案的原生環境， IOS 就沒有這個問題。</p>
 <p>使用 Git Bash 來到專案路徑，執行指令 <code>sh deploy.sh</code> 就可以順利執行 sh 檔。</p>
-<img src="https://4.bp.blogspot.com/-ijA8oRW0ZUQ/Xlzixyg-M9I/AAAAAAAABOw/oFgx1EaWemUJMLs8RMal31DnqFt9XSAZgCK4BGAYYCw/s400/564654.JPG" class="[class names]" title="[width] [height] " alt="title text">
-<img src="https://3.bp.blogspot.com/-3m1LOKlIFec/Xlzi6OZc-KI/AAAAAAAABO4/sFiSzK59jlQk8Ddin3LkS9NUng_wz1uOQCK4BGAYYCw/s640/654.JPG" class="[class names]" title="[width] [height] " alt="title text">
+<img src="https://4.bp.blogspot.com/-ijA8oRW0ZUQ/Xlzixyg-M9I/AAAAAAAABOw/oFgx1EaWemUJMLs8RMal31DnqFt9XSAZgCK4BGAYYCw/s400/564654.JPG" class="[class names]">
+<img src="https://3.bp.blogspot.com/-3m1LOKlIFec/Xlzi6OZc-KI/AAAAAAAABO4/sFiSzK59jlQk8Ddin3LkS9NUng_wz1uOQCK4BGAYYCw/s640/654.JPG" class="[class names]">
 
 <p>但是有的執行後會跳出以下訊息<br><code>Please make sure you have the correct access rights and the repository exists.</code></p>
-<img src="https://3.bp.blogspot.com/-sWA_MgrMq-U/XlzjhxVBb8I/AAAAAAAABPI/x1nsr4oFzWY2CWIxiXUP-Wl1p9O78UgzgCK4BGAYYCw/s640/98798.JPG" class="[class names]" title="[width] [height] " alt="title text">
+<img src="https://3.bp.blogspot.com/-sWA_MgrMq-U/XlzjhxVBb8I/AAAAAAAABPI/x1nsr4oFzWY2CWIxiXUP-Wl1p9O78UgzgCK4BGAYYCw/s640/98798.JPG" class="[class names]">
 
 <p>於是把這串話拿去 google ，得知這是 GitHub 的 SSH 驗證問題<br>這邊參考網路上的做法 <a href="https://blog.csdn.net/jingtingfengguo/article/details/51892864" target="_blank" rel="noopener">https://blog.csdn.net/jingtingfengguo/article/details/51892864</a></p>
 <ol>
@@ -308,17 +308,17 @@
 <li><p>用記事本打開 id_rsa 檔，複製內容為 ssh-rsa 開頭的全部內容，雖然兩個檔案一樣叫做 id_rsa ，但是內容不一樣，所以兩個都要打開來看。</p>
 </li>
 <li><p>登入你的 GitHub 進入以下地方，點選 New SSH Key</p>
-<img src="https://3.bp.blogspot.com/-eFa5_AmR5Jc/Xlzy0tXW54I/AAAAAAAABPU/gqkfJv69Qwg2foyxwBbgytzD5-rRfdbMQCK4BGAYYCw/s640/4564654.jpg" class="[class names]" title="[width] [height] " alt="title text">
+<img src="https://3.bp.blogspot.com/-eFa5_AmR5Jc/Xlzy0tXW54I/AAAAAAAABPU/gqkfJv69Qwg2foyxwBbgytzD5-rRfdbMQCK4BGAYYCw/s640/4564654.jpg" class="[class names]">
 <p>把複製到的內容貼入 Key (Title 可以不用寫東西)</p>
-<img src="https://2.bp.blogspot.com/-babRKgLybXM/Xlzzc_fQlVI/AAAAAAAABPg/5sVFjA3S1joYUP_aqDhiDtAca_Y2kNDWwCK4BGAYYCw/s640/654654.jpg" class="[class names]" title="[width] [height] " alt="title text">
+<img src="https://2.bp.blogspot.com/-babRKgLybXM/Xlzzc_fQlVI/AAAAAAAABPg/5sVFjA3S1joYUP_aqDhiDtAca_Y2kNDWwCK4BGAYYCw/s640/654654.jpg" class="[class names]">
 </li>
 <li><p>成功增加後，回到 Git Bash 輸入 ssh -T <a href="mailto:git@github.com">git@github.com</a> 然後會挑出一堆話<br><code>The authenticity of host &#39;github.com (xxxxxxx)&#39; can&#39;t be established.RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.Are you sure you want to continue connecting (yes/no)?</code> 回答 yes 即可</p>
 </li>
 </ol>
 <p>然後你就會得到成功的訊息<br><code>You&#39;ve successfully authenticated, but GitHub does not provide shell access.</code></p>
 <ol start="8">
-<li>接著在專案路徑下執行 <code>sh deploy.sh</code> 或是到專案資料夾雙擊 deploy.sh 檔案就可以了<img src="https://3.bp.blogspot.com/-avM6mHJA_wU/Xlz5PWHbV5I/AAAAAAAABPs/8f2oyblQjL4lIaPt-la8uj_UJ8nym1zngCK4BGAYYCw/s640/564564.JPG" class="[class names]" title="[width] [height] " alt="title text">
-<img src="https://1.bp.blogspot.com/-_JKNWsL5rG0/Xlz5QzGz4LI/AAAAAAAABP0/ILL64miWGfcGuNycmNVAdTMUZ5Pob3y-QCK4BGAYYCw/s640/98%252B89898.JPG" class="[class names]" title="[width] [height] " alt="title text">
+<li>接著在專案路徑下執行 <code>sh deploy.sh</code> 或是到專案資料夾雙擊 deploy.sh 檔案就可以了<img src="https://3.bp.blogspot.com/-avM6mHJA_wU/Xlz5PWHbV5I/AAAAAAAABPs/8f2oyblQjL4lIaPt-la8uj_UJ8nym1zngCK4BGAYYCw/s640/564564.JPG" class="[class names]">
+<img src="https://1.bp.blogspot.com/-_JKNWsL5rG0/Xlz5QzGz4LI/AAAAAAAABP0/ILL64miWGfcGuNycmNVAdTMUZ5Pob3y-QCK4BGAYYCw/s640/98%252B89898.JPG" class="[class names]">
 
 </li>
 </ol>
@@ -424,20 +424,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>

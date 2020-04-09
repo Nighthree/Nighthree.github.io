@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-tw,en,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="最近想複習六角的 JavaScript 學徒的試煉 課程內容，把先前理解到的重新整理，順便紀錄一下，第一個想到的就是 AJAX 了， AJAX 算是前端一個蠻重要的小技術，趕緊來寫吧~ 什麼是 AJAX 呢？ 非同步的 JavaScript 及 XML （Asynchronous JavaScript and XML，AJAX） 並不能稱做是種「技術」，而是 2005 年時由 Jesse Jame">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AJAX 中的 readyState">
+<meta property="og:url" content="http://yoursite.com/2020/04/09/2020-04-09/index.html">
+<meta property="og:site_name" content="Shine&#39;s Blog">
+<meta property="og:description" content="最近想複習六角的 JavaScript 學徒的試煉 課程內容，把先前理解到的重新整理，順便紀錄一下，第一個想到的就是 AJAX 了， AJAX 算是前端一個蠻重要的小技術，趕緊來寫吧~ 什麼是 AJAX 呢？ 非同步的 JavaScript 及 XML （Asynchronous JavaScript and XML，AJAX） 並不能稱做是種「技術」，而是 2005 年時由 Jesse Jame">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://1.bp.blogspot.com/-uwwibL80Cks/Xo7717zIClI/AAAAAAAABSU/kP9WrI1Ctk4FLkuAJDhnKzjx5fj61xLlwCLcBGAsYHQ/s1600/%25E8%25A8%25BB%25E8%25A7%25A3%2B2020-04-09%2B184016.jpg">
+<meta property="article:published_time" content="2020-04-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-04-09T15:45:44.595Z">
+<meta property="article:author" content="Shine">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="AJAX">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://1.bp.blogspot.com/-uwwibL80Cks/Xo7717zIClI/AAAAAAAABSU/kP9WrI1Ctk4FLkuAJDhnKzjx5fj61xLlwCLcBGAsYHQ/s1600/%25E8%25A8%25BB%25E8%25A7%25A3%2B2020-04-09%2B184016.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/04/09/2020-04-09/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>AJAX 中的 readyState | Shine's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shine's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">跌倒了也要記得爬起來繼續向前行</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>歸檔</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/09/2020-04-09/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Shine">
+      <meta itemprop="description" content="想分享什麼就分享什麼的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shine's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AJAX 中的 readyState
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+              
+
+              <time title="創建時間：2020-04-09 00:00:00 / 修改時間：23:45:44" itemprop="dateCreated datePublished" datetime="2020-04-09T00:00:00+08:00">2020-04-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近想複習六角的 <a href="https://www.udemy.com/course/javascript-learning/" target="_blank" rel="noopener">JavaScript 學徒的試煉</a> 課程內容，把先前理解到的重新整理，順便紀錄一下，第一個想到的就是 AJAX 了， AJAX 算是前端一個蠻重要的小技術，趕緊來寫吧~</p>
+<h2 id="什麼是-AJAX-呢？"><a href="#什麼是-AJAX-呢？" class="headerlink" title="什麼是 AJAX 呢？"></a>什麼是 AJAX 呢？</h2><blockquote>
+<p>非同步的 JavaScript 及 XML （Asynchronous JavaScript and XML，AJAX） 並不能稱做是種「技術」，而是 2005 年時由 Jesse James Garrett 所發明的術語，描述一種使用數個既有技術的「新」方法。這些技術包括 HTML 或 XHTML、層疊樣式表、JavaScript、文件物件模型、XML、XSLT 以及最重要的 XMLHttpRequest 物件。<br>當這些技術被結合在 Ajax 模型中，Web 應用程式便能快速、即時更動介面及內容，不需要重新讀取整個網頁，讓程式更快回應使用者的操作。<br>擷取自：<a href="https://ithelp.ithome.com.tw/articles/10200409" target="_blank" rel="noopener">https://ithelp.ithome.com.tw/articles/10200409</a></p>
+</blockquote>
+<p>哇，好多的專有名詞還是不太懂 AJAX 是什麼。</p>
+<p>簡單來說：在不重整的網頁的情況下，透過 JS 事件把請求到的資料渲染到網頁上。</p>
+<p>最常被用在註冊帳號時，可以先透過檢查按鈕，檢查帳號是否有重複。</p>
+<p>這樣做的好處是可以漸少伺服器的負擔</p>
+<p>網路上有很多 AJAX 的詳細介紹和說明，這邊主要是想紀錄程式碼實作的部分</p>
+<h2 id="宣告變數"><a href="#宣告變數" class="headerlink" title="宣告變數"></a>宣告變數</h2><p>首先會先宣告一個變數並賦予它的物件內容為 <code>XMLHttpRequest</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br></pre></td></tr></table></figure>
+<p>這時我們在瀏覽器呼喚 <code>xhr</code> 這個變數就會得到下面圖片顯示的物件內容</p>
+<img src="https://1.bp.blogspot.com/-uwwibL80Cks/Xo7717zIClI/AAAAAAAABSU/kP9WrI1Ctk4FLkuAJDhnKzjx5fj61xLlwCLcBGAsYHQ/s1600/%25E8%25A8%25BB%25E8%25A7%25A3%2B2020-04-09%2B184016.jpg" class="[class names]">
+
+<p>先來提 <code>readyState</code> ，這是指 xhr 物件的狀態</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">readyState: <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>屬性值為 0 的時候</p>
+<blockquote>
+<p>代表已經建立了 <code>XMLHttpRequest</code> 物件，但是還沒有連結你要撈的資料</p>
+</blockquote>
+<h3 id="open"><a href="#open" class="headerlink" title="open"></a>open</h3><p>接下來會用到一個指令為 <code>open()</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xhr.open(<span class="string">''</span>,<span class="string">''</span>,<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<p>帶入的順序為格式、要讀取的網址、同步與非同步</p>
+<p>常見的格式為：</p>
+<ul>
+<li><code>GET</code> - 讀取資料</li>
+<li><code>POST</code> - 傳送資料</li>
+<li><code>PUT</code> - 修改資料</li>
+<li><code>DELETE</code> - 刪除資料<br>其他還有很多請求方法， <a href="https://developer.mozilla.org/zh-TW/docs/Web/HTTP/Methods" target="_blank" rel="noopener">MDN 文件</a></li>
+</ul>
+<p>同步與非同步的部分在之後的更新或文章再來講，這裡先設為 <code>ture</code> 即可。</p>
+<p>當上述的值寫入 <code>open()</code> 內後</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xhr.open(<span class="string">'GET'</span>,<span class="string">'網址'</span>,<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+<p>此時 <code>readyState</code> 就變為 1 了，意思是</p>
+<blockquote>
+<p>你已經用了 <code>open()</code> ，但你還沒有把資料傳送過去</p>
+</blockquote>
+<h3 id="send"><a href="#send" class="headerlink" title="send"></a>send</h3><p>傳送資料的語法為 <code>send()</code></p>
+<p>但沒有要傳送資料該怎麼處理呢？ 寫入 null 即可</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xhr.send(<span class="literal">null</span>); <span class="comment">//代表為空值</span></span><br></pre></td></tr></table></figure>
+
+<p>這時 <code>readyState</code> 變為 4 了，意思是</p>
+<blockquote>
+<p>你撈到資料了，數據已經完全接收到了</p>
+</blockquote>
+<h2 id="撈到的資料"><a href="#撈到的資料" class="headerlink" title="撈到的資料"></a>撈到的資料</h2><p>而我們撈到的內容就會相應顯示在 response 系列的屬性中，撈到的物件資料會以字串的方式來呈現，屆時就可以利用 <code>JSON.parse()</code> 來轉換為 JavaScript 可讀取的格式。</p>
+<h2 id="其他-readyState-的意思"><a href="#其他-readyState-的意思" class="headerlink" title="其他 readyState 的意思"></a>其他 readyState 的意思</h2><p>前面講了 <code>readyState</code> 的 0 、 1 、 4 所代表的意思，那麼 2 和 3 呢？</p>
+<p>2 代表的是</p>
+<blockquote>
+<p>偵測到你用了 send</p>
+</blockquote>
+<p>3 代表的是</p>
+<blockquote>
+<p>loading ，資料量太大了還再載入中</p>
+</blockquote>
+<h2 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h2><p>這邊來總結一下程式碼和所有的 readyState 數字所代表的含意</p>
+<p>首先要建立一個 <code>XMLHttpRequest</code> 物件，利用 <code>open()</code> 和 <code>send()</code> 來請求和傳送資料。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//上述所有的程式碼合併</span></span><br><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">xhr.open(<span class="string">'GET'</span>,<span class="string">'網址'</span>,<span class="literal">true</span>);</span><br><span class="line">xhr.send(<span class="literal">null</span>);</span><br></pre></td></tr></table></figure>
+
+<p>readyState 0 ~ 4 ：<br>0 → 代表已經建立了 <code>XMLHttpRequest</code> 物件，但是還沒有連結你要撈的資料<br>1 → 你已經用了 <code>open()</code> ，但你還沒有把資料傳送過去<br>2 → 偵測到你用了 send<br>3 → loading ，資料量太大了還再載入中<br>4 → 你撈到資料了，數據已經完全接收到了</p>
+<p>最後，原本只是想簡單紀錄一下 AJAX 的語法，但看了一小部分才發現很多細節忘光光了，只好都記錄下來，寫著寫著就這麼多內容去了 Orz 。</p>
+<p>我沒有想要變系列文阿~ (吶喊</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+              <a href="/tags/AJAX/" rel="tag"># AJAX</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/17/2020-03-17-%E5%A6%82%E4%BD%95%E5%9C%A8%20Vue%20%E4%BD%BF%E7%94%A8%20AOS/" rel="prev" title="如何在 Vue 使用 AOS 動畫">
+      <i class="fa fa-chevron-left"></i> 如何在 Vue 使用 AOS 動畫
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什麼是-AJAX-呢？"><span class="nav-number">1.</span> <span class="nav-text">什麼是 AJAX 呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#宣告變數"><span class="nav-number">2.</span> <span class="nav-text">宣告變數</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#open"><span class="nav-number">2.1.</span> <span class="nav-text">open</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#send"><span class="nav-number">2.2.</span> <span class="nav-text">send</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#撈到的資料"><span class="nav-number">3.</span> <span class="nav-text">撈到的資料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他-readyState-的意思"><span class="nav-number">4.</span> <span class="nav-text">其他 readyState 的意思</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#總結"><span class="nav-number">5.</span> <span class="nav-text">總結</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Shine</p>
+  <div class="site-description" itemprop="description">想分享什麼就分享什麼的地方</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Nighthree" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Nighthree" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shine</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 強力驅動 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主題 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
