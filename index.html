@@ -162,6 +162,148 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/19/2020-08-19-vue%E7%9A%84axios%E6%94%94%E6%88%AA%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Shine">
+      <meta itemprop="description" content="想分享什麼就分享什麼的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shine's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/19/2020-08-19-vue%E7%9A%84axios%E6%94%94%E6%88%AA%E5%99%A8/" class="post-title-link" itemprop="url">Vue 的 axios 全域攔截器</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+              
+
+              <time title="創建時間：2020-08-19 00:00:00 / 修改時間：20:50:55" itemprop="dateCreated datePublished" datetime="2020-08-19T00:00:00+08:00">2020-08-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Vue-的-axios-全域攔截器"><a href="#Vue-的-axios-全域攔截器" class="headerlink" title="Vue 的 axios 全域攔截器"></a>Vue 的 axios 全域攔截器</h1><blockquote>
+<p>本篇運用到 Vue Cli 以及 Vuex</p>
+</blockquote>
+<blockquote>
+<p>以六角學院的 Vue 最終作業來說用到攔截器是為了搭配 <a href="https://www.npmjs.com/package/vue-loading-overlay" target="_blank" rel="noopener">Vue Loading Overlay</a> 這個套件，平常在寫時執行每個 API 都會帶一次 <code>true</code> 和 <code>false</code> ，用攔截器的好處是可以省去 <code>API 數量 * 2</code> 行的程式碼，如果 API 有 50 個這樣就可以省去 100 行的狀態控制程式碼，並且也不用煩惱在製作測試時狀態控制碼有沒有被關好。</p>
+</blockquote>
+<h2 id="起手式"><a href="#起手式" class="headerlink" title="起手式"></a>起手式</h2><h3 id="安裝-vue-axios"><a href="#安裝-vue-axios" class="headerlink" title="安裝 vue-axios"></a>安裝 <a href="https://www.npmjs.com/package/vue-axios" target="_blank" rel="noopener">vue-axios</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save axios vue-axios</span><br></pre></td></tr></table></figure>
+<p><code>main.js</code> 寫入</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">'axios'</span></span><br><span class="line"><span class="keyword">import</span> VueAxios <span class="keyword">from</span> <span class="string">'vue-axios'</span></span><br><span class="line"> </span><br><span class="line">Vue.use(VueAxios, axios)</span><br></pre></td></tr></table></figure>
+
+<h3 id="安裝-vue-loading-overlay"><a href="#安裝-vue-loading-overlay" class="headerlink" title="安裝 vue-loading-overlay"></a>安裝 <a href="https://www.npmjs.com/package/vue-loading-overlay" target="_blank" rel="noopener">vue-loading-overlay</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install vue-loading-overlay --save</span><br></pre></td></tr></table></figure>
+
+<p><code>main.js</code> 寫入</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Loading <span class="keyword">from</span> <span class="string">'vue-loading-overlay'</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">'vue-loading-overlay/dist/vue-loading.css'</span></span><br><span class="line"></span><br><span class="line">Vue.component(<span class="string">'Loading'</span>, Loading);</span><br></pre></td></tr></table></figure>
+<h2 id="基本程式碼"><a href="#基本程式碼" class="headerlink" title="基本程式碼"></a>基本程式碼</h2><p>通常我會很乾脆的放到 App.vue 裡面，可以省很多事，<del>反正標題都寫全域了</del></p>
+<p>App.vue</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Loading</span> <span class="attr">:active.sync</span>=<span class="string">"isLoading"</span>&gt;</span><span class="tag">&lt;/<span class="name">Loading</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">router-view</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line">  computed: &#123;</span><br><span class="line">    isLoading() &#123;</span><br><span class="line"><span class="actionscript">      <span class="keyword">return</span> <span class="keyword">this</span>.$store.state.isLoading;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Vuex 的 store/index.js ，因為待會會用到所以先寫在這裡</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> Vuex <span class="keyword">from</span> <span class="string">'vuex'</span></span><br><span class="line"></span><br><span class="line">Vue.use(Vuex)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">  state: &#123;</span><br><span class="line">    isLoading: <span class="literal">false</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  actions: &#123;</span><br><span class="line">    setLoading(context, payload) &#123;</span><br><span class="line">      context.commit(<span class="string">'Set_Loading'</span>, payload);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  mutations: &#123;</span><br><span class="line">    Set_Loading(state, payload) &#123;</span><br><span class="line">      state.isLoading = payload;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>變數名稱 <code>isLoading</code> ，控制 loading 畫面發動的時機，帶 Boolean : <code>true</code> or <code>false</code></p>
+<p>大部分在寫程式碼的時候會在 axios 請求中帶入 isLoading 的控制碼片段</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// methods 中的方法</span></span><br><span class="line">getTest()&#123;</span><br><span class="line">  <span class="keyword">this</span>.$store.dispatch(setLoading, <span class="literal">true</span>); <span class="comment">// 開始執行程式碼時打開 loading</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">this</span>.axios.get(APIurl).then(<span class="function">(<span class="params">res</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res.data)</span><br><span class="line">    ...</span><br><span class="line">    ... <span class="comment">//要執行的程式碼</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">this</span>.$store.dispatch(setLoading, <span class="literal">false</span>); <span class="comment">// 執行完程式碼後關閉 loading</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>像這樣的方式來控制 loading 畫面，如同前面所講的一個專案下如果有 50 個 API 要請，那就要寫 100 行控制碼來控制，作業感很重的感覺，下面來開始建立我們的 axios 攔截器吧。</p>
+<h2 id="建立攔截器"><a href="#建立攔截器" class="headerlink" title="建立攔截器"></a>建立攔截器</h2><p>通常我會在 <code>src</code> 資料夾下面新增一個叫 JS 的資料夾，建立一個 axios.js 檔案，把剛剛在 <code>store/index.js</code> 寫好的狀態控制引進來</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">'axios'</span></span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">'@/store/index.js'</span></span><br><span class="line"></span><br><span class="line">axios.interceptors.request.use(</span><br><span class="line">  (confing) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'攔截請求'</span>);</span><br><span class="line">    store.commit(<span class="string">'Set_Loading'</span>, <span class="literal">true</span>);</span><br><span class="line">    <span class="keyword">return</span> confing;</span><br><span class="line">  &#125;,</span><br><span class="line">  (error) =&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(error);</span><br><span class="line">  &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">//響應攔截</span></span><br><span class="line">axios.interceptors.response.use(</span><br><span class="line">  (response) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'攔截回應'</span>);</span><br><span class="line">    store.commit(<span class="string">'Set_Loading'</span>, <span class="literal">false</span>)</span><br><span class="line">    <span class="keyword">return</span> response;</span><br><span class="line">  &#125;,</span><br><span class="line">  (error) =&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(error);</span><br><span class="line">  &#125;</span><br><span class="line">);</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> axios;</span><br></pre></td></tr></table></figure>
+
+<h3 id="main-js"><a href="#main-js" class="headerlink" title="main.js"></a>main.js</h3><p>原本的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">'axios'</span></span><br></pre></td></tr></table></figure>
+<p>改為</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">'@/js/axios'</span></span><br></pre></td></tr></table></figure>
+
+<p>上面提到的 <code>getTest();</code> 就可以簡略為</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// methods 中的方法</span></span><br><span class="line">getTest()&#123;</span><br><span class="line">  <span class="keyword">this</span>.axios.get(APIurl).then(<span class="function">(<span class="params">res</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res.data)</span><br><span class="line">    ...</span><br><span class="line">    ... <span class="comment">//要執行的程式碼</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>只要是使用 <code>this.axios</code> 發動請求就會自動帶入 loading 的狀態控制囉！</p>
+<h2 id="進階-API-管理方法"><a href="#進階-API-管理方法" class="headerlink" title="進階 API 管理方法"></a>進階 API 管理方法</h2><p>當專案 API 越來越多的時候，資料也從各種不同的網域取得時，就會想要把 API 放在同一支檔案裡集中管理，目前是用 <code>export</code> 和 <code>import</code> 的方式處理，在各個 vue 檔或是 store/index.js 我們只要引入變數就可以了。</p>
+<h3 id="變數引用"><a href="#變數引用" class="headerlink" title="變數引用"></a>變數引用</h3><p>接下來一樣在 js 資料夾新增一個 api.js 的檔案。</p>
+<p>寫入</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> getRandomUser = <span class="string">'https://randomuser.me/api/'</span></span><br></pre></td></tr></table></figure>
+<p>在 vue 檔引入</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; getRandomUser &#125; <span class="keyword">from</span> <span class="string">"@/js/api.js"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  methods: &#123;</span><br><span class="line">    getTest() &#123;</span><br><span class="line">      <span class="keyword">this</span>.axios.get(getRandomUser).then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(res.data);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>簡易的引用就完成了</p>
+<h3 id="不同網域的時候"><a href="#不同網域的時候" class="headerlink" title="不同網域的時候"></a>不同網域的時候</h3><p>當 API 網域不同時，我就會採用這種方式， axios 提供了自訂義默認值的方法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">axios.create(&#123; &#125;);</span><br></pre></td></tr></table></figure>
+<p>目前我比較常使用 baseURL 和 timeout</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">axios.create(&#123;</span><br><span class="line">  <span class="comment">// 引用 .env 所設定的網域</span></span><br><span class="line">  baseURL: process.env.VUE_APP_PATH,</span><br><span class="line">  <span class="comment">// 單位毫秒，請求超過 10 秒時，就不再等待請求。</span></span><br><span class="line">  timeout: <span class="number">10000</span>, </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>綜合前面所使用的攔截器方法，來看完整的 api.js 內容吧</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">'axios'</span>;</span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">'@/store/index.js'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> eventsRequest = axios.create(&#123;</span><br><span class="line">  baseURL: process.env.VUE_APP_PATH,</span><br><span class="line">  timeout: <span class="number">10000</span>,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">eventsRequest.interceptors.request.use(</span><br><span class="line">  (config) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'攔截請求'</span>);</span><br><span class="line">    store.commit(<span class="string">'Set_Loading'</span>, <span class="literal">true</span>);</span><br><span class="line">    <span class="keyword">return</span> config</span><br><span class="line">  &#125;,</span><br><span class="line">  (err) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(err + <span class="string">'請求失敗'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">eventsRequest.interceptors.response.use(</span><br><span class="line">  (res) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'攔截回應'</span>);</span><br><span class="line">    store.commit(<span class="string">'Set_Loading'</span>, <span class="literal">false</span>)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">  &#125;,</span><br><span class="line">  (err) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(err + <span class="string">'回應失敗'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// get API</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> get_user = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> eventsRequest.get(<span class="string">'/get_user/'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// post API</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> post_login = <span class="function">(<span class="params">obj</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> eventsRequest.post(<span class="string">'/login/'</span>, obj)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>get API 的 URL 就等於</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">axios.get(process.env.VUE_APP_PATH + <span class="string">'/get-user/'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>post API 同理</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">axios.post(process.env.VUE_APP_PATH + <span class="string">'/login/'</span>, obj);</span><br></pre></td></tr></table></figure>
+
+<h3 id="vue-檔"><a href="#vue-檔" class="headerlink" title="vue 檔"></a>vue 檔</h3><p>把上面兩個變數引入到 vue 檔，就會是變數後面接 .then()</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get_user().then(<span class="function">(<span class="params">res</span>)=&gt;</span>&#123;&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; get_user, post_login &#125; <span class="keyword">from</span> <span class="string">"@/js/api.js"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  methods: &#123;</span><br><span class="line">    <span class="comment">// get API</span></span><br><span class="line">    getTest() &#123;</span><br><span class="line">      get_user().then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(res.data);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// post API</span></span><br><span class="line">    postTest() &#123;</span><br><span class="line">      <span class="keyword">let</span> obj = &#123; <span class="attr">a</span>: <span class="string">'abc'</span>&#125;;</span><br><span class="line">      post_login(obj).then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(res.data);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<p>這樣就 OK 哩。</p>
+<h2 id="補充"><a href="#補充" class="headerlink" title="補充"></a>補充</h2><p>因為接收到請求就會立即執行關閉的狀態控制，</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">store.commit(<span class="string">'Set_Loading'</span>, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+
+<p>但有時候還有後續的程式碼要跑，使用者如果很急性的話 loading 一結束就按下功能鈕，可能會導致什麼錯誤也說不定，這邊我會再加上 <code>setTimeout</code> 延遲關閉的時間，留個緩衝的時間讓後續的程式碼跑完。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(store.commit(<span class="string">'Set_Loading'</span>, <span class="literal">false</span>), <span class="number">2000</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><ul>
+<li><p>設定好 axios 攔截器就可以省略掉很多行 loading 狀態控制碼。</p>
+</li>
+<li><p>做好 API 管理，以後 API 路徑有變動時只要去 .env 修改網域位置或是進到 api.js 修改就 OK 了，就不用再檔案中一個一個去找散落的 API 字串。</p>
+</li>
+</ul>
+<p>參考：<a href="https://ykloveyxk.github.io/2017/02/25/axios%E5%85%A8%E6%94%BB%E7%95%A5/" target="_blank" rel="noopener">https://ykloveyxk.github.io/2017/02/25/axios%E5%85%A8%E6%94%BB%E7%95%A5/</a><br>範例 API：<a href="https://randomuser.me/" target="_blank" rel="noopener">https://randomuser.me/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/21/2020-05-21-%E8%8F%9C%E9%B3%A5%E5%89%8D%E7%AB%AF%20Docker%20%E6%97%A5%E8%A8%98%20(%E4%B8%80)%20%E5%AE%89%E8%A3%9D%20Docker-ce/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -944,7 +1086,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -957,7 +1099,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
