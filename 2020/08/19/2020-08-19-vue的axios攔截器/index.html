@@ -28,7 +28,7 @@
 <meta property="og:description" content="Vue 的 axios 全域攔截器 本篇運用到 Vue Cli 以及 Vuex   以六角學院的 Vue 最終作業來說用到攔截器是為了搭配 Vue Loading Overlay 這個套件，平常在寫時執行每個 API 都會帶一次 true 和 false ，用攔截器的好處是可以省去 API 數量 * 2 行的程式碼，如果 API 有 50 個這樣就可以省去 100 行的狀態控制程式碼，並且也不用煩">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2020-08-18T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-08-19T12:50:55.674Z">
+<meta property="article:modified_time" content="2020-08-19T13:02:33.463Z">
 <meta property="article:author" content="Shine">
 <meta property="article:tag" content="Vue">
 <meta property="article:tag" content="axios">
@@ -185,7 +185,7 @@
               <span class="post-meta-item-text">發表於</span>
               
 
-              <time title="創建時間：2020-08-19 00:00:00 / 修改時間：20:50:55" itemprop="dateCreated datePublished" datetime="2020-08-19T00:00:00+08:00">2020-08-19</time>
+              <time title="創建時間：2020-08-19 00:00:00 / 修改時間：21:02:33" itemprop="dateCreated datePublished" datetime="2020-08-19T00:00:00+08:00">2020-08-19</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -193,7 +193,7 @@
               </span>
               <span class="post-meta-item-text">分類於</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+                  <a href="/categories/axios/" itemprop="url" rel="index"><span itemprop="name">axios</span></a>
                 </span>
             </span>
 
@@ -244,7 +244,7 @@
 <p>上面提到的 <code>getTest();</code> 就可以簡略為</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// methods 中的方法</span></span><br><span class="line">getTest()&#123;</span><br><span class="line">  <span class="keyword">this</span>.axios.get(APIurl).then(<span class="function">(<span class="params">res</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res.data)</span><br><span class="line">    ...</span><br><span class="line">    ... <span class="comment">//要執行的程式碼</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>只要是使用 <code>this.axios</code> 發動請求就會自動帶入 loading 的狀態控制囉！</p>
-<h2 id="進階-API-管理方法"><a href="#進階-API-管理方法" class="headerlink" title="進階 API 管理方法"></a>進階 API 管理方法</h2><p>當專案 API 越來越多的時候，資料也從各種不同的網域取得時，就會想要把 API 放在同一支檔案裡集中管理，目前是用 <code>export</code> 和 <code>import</code> 的方式處理，在各個 vue 檔或是 store/index.js 我們只要引入變數就可以了。</p>
+<h2 id="進階-API-管理"><a href="#進階-API-管理" class="headerlink" title="進階 API 管理"></a>進階 API 管理</h2><p>當專案 API 越來越多的時候，資料也從各種不同的網域取得時，就會想要把 API 放在同一支檔案裡集中管理，目前是用 <code>export</code> 和 <code>import</code> 的方式處理，在各個 vue 檔或是 store/index.js 我們只要引入變數就可以了。</p>
 <h3 id="變數引用"><a href="#變數引用" class="headerlink" title="變數引用"></a>變數引用</h3><p>接下來一樣在 js 資料夾新增一個 api.js 的檔案。</p>
 <p>寫入</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> getRandomUser = <span class="string">'https://randomuser.me/api/'</span></span><br></pre></td></tr></table></figure>
@@ -365,7 +365,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vue-的-axios-全域攔截器"><span class="nav-number">1.</span> <span class="nav-text">Vue 的 axios 全域攔截器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#起手式"><span class="nav-number">1.1.</span> <span class="nav-text">起手式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安裝-vue-axios"><span class="nav-number">1.1.1.</span> <span class="nav-text">安裝 vue-axios</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安裝-vue-loading-overlay"><span class="nav-number">1.1.2.</span> <span class="nav-text">安裝 vue-loading-overlay</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本程式碼"><span class="nav-number">1.2.</span> <span class="nav-text">基本程式碼</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建立攔截器"><span class="nav-number">1.3.</span> <span class="nav-text">建立攔截器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#main-js"><span class="nav-number">1.3.1.</span> <span class="nav-text">main.js</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#進階-API-管理方法"><span class="nav-number">1.4.</span> <span class="nav-text">進階 API 管理方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#變數引用"><span class="nav-number">1.4.1.</span> <span class="nav-text">變數引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不同網域的時候"><span class="nav-number">1.4.2.</span> <span class="nav-text">不同網域的時候</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vue-檔"><span class="nav-number">1.4.3.</span> <span class="nav-text">vue 檔</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#補充"><span class="nav-number">1.5.</span> <span class="nav-text">補充</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#結語"><span class="nav-number">1.6.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vue-的-axios-全域攔截器"><span class="nav-number">1.</span> <span class="nav-text">Vue 的 axios 全域攔截器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#起手式"><span class="nav-number">1.1.</span> <span class="nav-text">起手式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安裝-vue-axios"><span class="nav-number">1.1.1.</span> <span class="nav-text">安裝 vue-axios</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安裝-vue-loading-overlay"><span class="nav-number">1.1.2.</span> <span class="nav-text">安裝 vue-loading-overlay</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本程式碼"><span class="nav-number">1.2.</span> <span class="nav-text">基本程式碼</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建立攔截器"><span class="nav-number">1.3.</span> <span class="nav-text">建立攔截器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#main-js"><span class="nav-number">1.3.1.</span> <span class="nav-text">main.js</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#進階-API-管理"><span class="nav-number">1.4.</span> <span class="nav-text">進階 API 管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#變數引用"><span class="nav-number">1.4.1.</span> <span class="nav-text">變數引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不同網域的時候"><span class="nav-number">1.4.2.</span> <span class="nav-text">不同網域的時候</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vue-檔"><span class="nav-number">1.4.3.</span> <span class="nav-text">vue 檔</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#補充"><span class="nav-number">1.5.</span> <span class="nav-text">補充</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#結語"><span class="nav-number">1.6.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -386,7 +386,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
       <div class="site-state-item site-state-tags">

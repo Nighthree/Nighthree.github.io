@@ -187,7 +187,7 @@
               <span class="post-meta-item-text">發表於</span>
               
 
-              <time title="創建時間：2020-08-19 00:00:00 / 修改時間：20:50:55" itemprop="dateCreated datePublished" datetime="2020-08-19T00:00:00+08:00">2020-08-19</time>
+              <time title="創建時間：2020-08-19 00:00:00 / 修改時間：21:02:33" itemprop="dateCreated datePublished" datetime="2020-08-19T00:00:00+08:00">2020-08-19</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -195,7 +195,7 @@
               </span>
               <span class="post-meta-item-text">分類於</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+                  <a href="/categories/axios/" itemprop="url" rel="index"><span itemprop="name">axios</span></a>
                 </span>
             </span>
 
@@ -246,7 +246,7 @@
 <p>上面提到的 <code>getTest();</code> 就可以簡略為</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// methods 中的方法</span></span><br><span class="line">getTest()&#123;</span><br><span class="line">  <span class="keyword">this</span>.axios.get(APIurl).then(<span class="function">(<span class="params">res</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res.data)</span><br><span class="line">    ...</span><br><span class="line">    ... <span class="comment">//要執行的程式碼</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>只要是使用 <code>this.axios</code> 發動請求就會自動帶入 loading 的狀態控制囉！</p>
-<h2 id="進階-API-管理方法"><a href="#進階-API-管理方法" class="headerlink" title="進階 API 管理方法"></a>進階 API 管理方法</h2><p>當專案 API 越來越多的時候，資料也從各種不同的網域取得時，就會想要把 API 放在同一支檔案裡集中管理，目前是用 <code>export</code> 和 <code>import</code> 的方式處理，在各個 vue 檔或是 store/index.js 我們只要引入變數就可以了。</p>
+<h2 id="進階-API-管理"><a href="#進階-API-管理" class="headerlink" title="進階 API 管理"></a>進階 API 管理</h2><p>當專案 API 越來越多的時候，資料也從各種不同的網域取得時，就會想要把 API 放在同一支檔案裡集中管理，目前是用 <code>export</code> 和 <code>import</code> 的方式處理，在各個 vue 檔或是 store/index.js 我們只要引入變數就可以了。</p>
 <h3 id="變數引用"><a href="#變數引用" class="headerlink" title="變數引用"></a>變數引用</h3><p>接下來一樣在 js 資料夾新增一個 api.js 的檔案。</p>
 <p>寫入</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> getRandomUser = <span class="string">'https://randomuser.me/api/'</span></span><br></pre></td></tr></table></figure>
@@ -1093,7 +1093,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
       <div class="site-state-item site-state-tags">
