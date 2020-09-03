@@ -28,7 +28,7 @@
 <meta property="og:description" content="Vue 的 axios 全域攔截器 本篇運用到 Vue Cli 以及 Vuex   以六角學院的 Vue 最終作業來說用到攔截器是為了搭配 Vue Loading Overlay 這個套件，平常在寫時執行每個 API 都會帶一次 true 和 false ，用攔截器的好處是可以省去 API 數量 * 2 行的程式碼，如果 API 有 50 個這樣就可以省去 100 行的狀態控制程式碼，並且也不用煩">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2020-08-18T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-09-03T11:59:54.146Z">
+<meta property="article:modified_time" content="2020-09-03T12:01:58.017Z">
 <meta property="article:author" content="Shine">
 <meta property="article:tag" content="Vue">
 <meta property="article:tag" content="JavaScript">
@@ -192,7 +192,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2020-09-03 19:59:54" itemprop="dateModified" datetime="2020-09-03T19:59:54+08:00">2020-09-03</time>
+                <time title="修改時間：2020-09-03 20:01:58" itemprop="dateModified" datetime="2020-09-03T20:01:58+08:00">2020-09-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -281,7 +281,7 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">store.commit(<span class="string">'Set_Loading'</span>, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
 
 <p>但有時候還有後續的程式碼要跑，使用者如果很急性的話 loading 一結束就按下功能鈕，可能會導致什麼錯誤也說不定，這邊我會再加上 <code>setTimeout</code> 延遲關閉的時間，留個緩衝的時間讓後續的程式碼跑完。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;store.commit(<span class="string">'Set_Loading'</span>, <span class="literal">false</span>)&#125;, <span class="number">2000</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;store.commit(<span class="string">'Set_Loading'</span>, <span class="literal">false</span>)&#125;, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
 
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><ul>
 <li><p>設定好 axios 攔截器就可以省略掉很多行 loading 狀態控制碼。</p>
